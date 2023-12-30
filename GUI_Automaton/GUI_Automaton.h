@@ -16,4 +16,6 @@ public:
 private:
     Ui::GUI_AutomatonClass ui;
     Automaton automaton;
+    std::pair<int, int> primaStare = std::make_pair(0, 0);
+    int indexStareSelectata = -1;
 };
