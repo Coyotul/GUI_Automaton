@@ -69,10 +69,7 @@ void GUI_Automaton::createAutomatonInstance(const QString& type) {
 
 void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
 {
-    if (automatonType != 1)
-    {
-        char simbolTranzitie = 'b';
-    }
+    
     std::ofstream g("output.txt");
     if (e->button() == Qt::LeftButton)
     {
@@ -115,6 +112,10 @@ void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
         g << stari.size();
         if (stari.size() == 0)
         {
+            if (automatonType != 3)
+            {
+                simbolTranzitie = 'b';
+            }
             automaton.seteazaSimbolInitial(q);
         }
         for (int i=0;i<stari.size();i++)
