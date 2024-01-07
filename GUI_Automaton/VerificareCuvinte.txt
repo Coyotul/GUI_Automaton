@@ -1,15 +1,15 @@
 7
-Cuvantul aanu este acceptat de automat
+Cuvantul aa nu este acceptat de automat
 
-Cuvantul aaanu este acceptat de automat
+Cuvantul aaa nu este acceptat de automat
 
-Cuvantul bbnu este acceptat de automat
+Cuvantul bb nu este acceptat de automat
 
-Cuvantul bnu este acceptat de automat
+Cuvantul b nu este acceptat de automat
 
-Cuvantul baanu este acceptat de automat
+Cuvantul baa nu este acceptat de automat
 
-Cuvantul baaafnu este acceptat de automat
+Cuvantul baaaf nu este acceptat de automat
 
-Cuvantul bnu este acceptat de automat
+Cuvantul b nu este acceptat de automat
 
