@@ -7,7 +7,8 @@
 #include <fstream>
 
 char q = 'a';
-char simbolTranzitie = 'b';
+char simbolTranzitie = 'λ';
+int automatonType = 0;
 
 
 GUI_Automaton::GUI_Automaton(QWidget *parent)
@@ -45,15 +46,20 @@ void GUI_Automaton::createAutomatonInstance(const QString& type) {
     // Create instances based on the selected type
     if (type == "AFN") {
         automaton2 = new AFN();
+        automatonType = 1;
     }
     else if (type == "AFD") {
         automaton2 = new AFD();
+        automatonType = 2;
     }
     else if (type == "LambdaAFN") {
         automaton2 = new LambdaAFN();
+        automatonType = 3;
+
     }
     else if (type == "PDA") {
         automaton2 = new APD();
+        automatonType = 4;
     }
     else {
         // Handle invalid type
@@ -62,6 +68,10 @@ void GUI_Automaton::createAutomatonInstance(const QString& type) {
 
 void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
 {
+    if (automatonType != 1)
+    {
+        char simbolTranzitie = 'b';
+    }
     std::ofstream g("output.out");
     if (e->button() == Qt::LeftButton)
     {
@@ -83,7 +93,11 @@ void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
                 if (fabs(e->pos().x() - posStari[i].first) < 10 &&
                     fabs(e->pos().y() - posStari[i].second) < 10)
                 {
-                    automaton.adaugaTranzitie(std::make_pair(automaton.getStari()[i], simbolTranzitie), automaton.getStari()[indexStareSelectata]);
+                    if(ui.input->text().size() == 0)
+                        automaton.adaugaTranzitie(std::make_pair(automaton.getStari()[i], simbolTranzitie), automaton.getStari()[indexStareSelectata]);
+                    else
+                        if(ui.input->text().size() == 1)
+                            automaton.adaugaTranzitie(std::make_pair(automaton.getStari()[i], ui.input->text().toStdString()[0]), automaton.getStari()[indexStareSelectata]);
                     indexStareSelectata = -1;
                     primaStare = std::make_pair(0, 0);
                     continue;
@@ -183,7 +197,10 @@ void GUI_Automaton::paintEvent(QPaintEvent* e)
             int arrowSize = 10;
             int angle = qAtan2(endPoint.y() - startPoint.y(), endPoint.x() - startPoint.x()) * 180 / 3.14159265;
             QPoint midPoint((startPoint.x() + endPoint.x()) / 2, (startPoint.y() + endPoint.y()) / 2);
-
+            QPoint midPoint2((startPoint.x() + endPoint.x()) / 2 + 10, (startPoint.y() + endPoint.y()) / 2 + 15);
+            QString s = " ";
+            s[0] = it.first.second;
+            p.drawText(midPoint2, s);
             p.drawLine(startPoint, endPoint);
             angle += 180;
             QPolygon arrowHead;

@@ -2,6 +2,7 @@
 #include <set>
 #include <map>
 #include <vector>
+#include <string>
 
 class Automaton
 {
@@ -19,6 +20,9 @@ public:
     std::vector<std::pair<char, char>> getPozitieTranzitie();
     void addPozitieStare(std::pair<int, int> pos);
     void addPozitieTranzitie(std::pair<char, char> pos);
+    bool CheckWord(std::string word, int it, char initialQ);
+    void PrintAutomaton();
+
 private:
     std::vector<char> Q;
     std::vector<char> Sigma;
