@@ -11,11 +11,11 @@ AFD::AFD(Automaton a)
 }
 
 void AFD::addState(char state) {
-    states.insert(state);
+    states.push_back(state);
 }
 
 void AFD::addAlphabetSymbol(char symbol) {
-    alphabet.insert(symbol);
+    alphabet.push_back(symbol);
 }
 
 void AFD::addTransition(char fromState, char symbol, char toState) {
