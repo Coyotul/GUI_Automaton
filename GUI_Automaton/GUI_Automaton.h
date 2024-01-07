@@ -8,6 +8,7 @@
 #include "AFD.h"
 #include "LambdaAFN.h"
 #include "APD.h"
+#include <queue>
 
 enum class AutomatonType
 {
@@ -28,6 +29,7 @@ public:
     void mouseReleaseEvent(QMouseEvent* e);
     void paintEvent(QPaintEvent* e);
     void keyPressEvent(QKeyEvent* event);
+    Automaton convertIntoDFA();
 
 private:
     Ui::GUI_AutomatonClass ui;

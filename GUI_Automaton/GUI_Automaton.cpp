@@ -177,9 +177,148 @@ void GUI_Automaton::keyPressEvent(QKeyEvent* event) {
         if (automaton.CheckWord(ui.input_2->text().toStdString(), 0, 0))
             f << "\n\nCuvantul " << ui.input_2->text().toStdString() << " este acceptat de automat";
     }
+    else if (event->key() == Qt::Key_Tab) //try to convert into DFA
+    {
+        std::map<std::pair<char, char>, std::vector<char>> currentTransitions = this->automaton.getTranzitii();
+        if (automatonType==2)
+            for (auto it : currentTransitions)
+            {
+                if (it.second.size() >= 2)
+                {
+                    f << "Automatul nu este bun";
+                    this->automaton = convertIntoDFA();
+                }
+            }
+        else {
+            f << "Automatul nu este AFD";
+        }
+    }
     else {
         QWidget::keyPressEvent(event);
     }
+}
+
+Automaton GUI_Automaton::convertIntoDFA()
+{
+    Automaton& automaton = this->automaton;
+    Automaton convertedAFN;
+
+    // Funcție pentru calculul epsilon-closure al unei stări în AFN
+    auto epsilonClosure = [&](char state) -> std::set<char> {
+        std::set<char> closure;
+        std::queue<char> stateQueue;
+        stateQueue.push(state);
+        closure.insert(state);
+
+        while (!stateQueue.empty()) {
+            char currentState = stateQueue.front();
+            stateQueue.pop();
+
+            auto transition = automaton.getTranzitii().find({ currentState, 'λ' });
+            if (transition != automaton.getTranzitii().end()) {
+                for (char nextState : transition->second) {
+                    if (closure.find(nextState) == closure.end()) {
+                        closure.insert(nextState);
+                        stateQueue.push(nextState);
+                    }
+                }
+            }
+        }
+
+        return closure;
+        };
+
+    // Funcție pentru verificarea dacă un set de stări conține cel puțin o stare finală în AFN
+    auto containsFinalState = [&](const std::set<char>& states) -> bool {
+        for (char state : states) {
+            if (std::find(automaton.getStariFinale().begin(), automaton.getStariFinale().end(), state) != automaton.getStariFinale().end()) {
+                return true;
+            }
+        }
+
+        return false;
+        };
+
+    // Funcție pentru crearea unei noi stări în AFN și adăugarea acesteia
+    auto createNewState = [&](const std::set<char>& state) -> char {
+        char newState = 'A' + convertedAFN.getStari().size();  // Presupunem că stările sunt etichetate cu litere
+        convertedAFN.adaugaStare(newState);
+
+        for (char symbol : convertedAFN.getSimboluri()) {
+            convertedAFN.adaugaTranzitie({ newState, symbol }, {});
+        }
+
+        return newState;
+        };
+
+    // Initializează starea inițială a AFN cu epsilon-closure a stării inițiale din AFN
+    std::set<char> initialClosure = epsilonClosure(automaton.getStareInitiala());
+    convertedAFN.seteazaSimbolInitial(createNewState(initialClosure));
+
+    // Coada pentru explorarea noilor stări în AFN
+    std::queue<std::set<char>> stateQueue;
+    stateQueue.push(initialClosure);
+
+    // Mapare între seturi de stări și stările corespunzătoare în AFN
+    std::map<std::set<char>, char> stateMapping;
+    stateMapping[initialClosure] = convertedAFN.getStareInitiala();
+
+    // Explorează stările AFN
+    while (!stateQueue.empty()) {
+        std::set<char> currentState = stateQueue.front();
+        stateQueue.pop();
+
+        // Explorează fiecare simbol din alfabet
+        for (char symbol : convertedAFN.getSimboluri()) {
+            std::set<char> nextState;
+
+            // Calculează epsilon-closure al noii stări pe baza tranzițiilor din AFN
+            for (char state : currentState) {
+                auto transition = automaton.getTranzitii().find({ state, symbol });
+                if (transition != automaton.getTranzitii().end()) {
+                    nextState.insert(transition->second.begin(), transition->second.end());
+                }
+            }
+
+            nextState = [&](const std::set<char>& states) {
+                std::set<char> result;
+                for (char state : states) {
+                    auto epsilonResult = epsilonClosure(state);
+                    result.insert(epsilonResult.begin(), epsilonResult.end());
+                }
+                return result;
+                }(nextState);
+
+            if (!nextState.empty()) {
+                char nextStateId;
+
+                // Verifică dacă starea a fost deja adăugată în AFN
+                auto it = stateMapping.find(nextState);
+                if (it == stateMapping.end()) {
+                    // Adaugă starea în AFN și în coada de explorare
+                    nextStateId = createNewState(nextState);
+                    stateQueue.push(nextState);
+                    stateMapping[nextState] = nextStateId;
+                }
+                else {
+                    // Starea deja există în AFN
+                    nextStateId = it->second;
+                }
+
+                // Adaugă tranziția în AFN
+                convertedAFN.adaugaTranzitie({ stateMapping[currentState], symbol }, nextStateId);
+            }
+        }
+    }
+
+    // Setează stările finale ale AFN
+    for (const auto& entry : stateMapping) {
+        if (containsFinalState(entry.first)) {
+            convertedAFN.adaugaStareFinala(entry.second);
+        }
+    }
+
+    return convertedAFN;
 }
 
 void GUI_Automaton::paintEvent(QPaintEvent* e)
