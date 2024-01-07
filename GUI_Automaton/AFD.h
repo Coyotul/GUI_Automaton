@@ -4,8 +4,9 @@
 #include <set>
 #include <map>
 #include <iostream>
+#include "Automaton.h"
 
-class AFD {
+class AFD : public Automaton {
 private:
     std::set<char> states;
     std::set<char> alphabet;

@@ -14,11 +14,51 @@ GUI_Automaton::GUI_Automaton(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+
+    automatonTypeComboBox = new QComboBox(this);
+    automatonTypeComboBox->addItem("AFN");
+    automatonTypeComboBox->addItem("AFD");
+    automatonTypeComboBox->addItem("LambdaAFN");
+    automatonTypeComboBox->addItem("PDA");
+    //ui.layout->addWidget(automatonTypeComboBox);  // Replace with your actual layout
+
+    // Connect QComboBox signal to slot
+    connect(automatonTypeComboBox, &QComboBox::currentTextChanged, this, &GUI_Automaton::createAutomatonInstance);
 }
 
 GUI_Automaton::~GUI_Automaton()
-{}
+{
+    if (automaton2 != nullptr) {
+        delete automaton2;
+    }
 
+
+}
+
+void GUI_Automaton::createAutomatonInstance(const QString& type) {
+    // Delete any existing automaton
+    /*if (automaton2 != nullptr) {
+        delete automaton2;
+        automaton2 = nullptr;
+    }*/
+
+    // Create instances based on the selected type
+    if (type == "AFN") {
+        automaton2 = new AFN();
+    }
+    else if (type == "AFD") {
+        automaton2 = new AFD();
+    }
+    else if (type == "LambdaAFN") {
+        automaton2 = new LambdaAFN();
+    }
+    else if (type == "PDA") {
+        automaton2 = new APD();
+    }
+    else {
+        // Handle invalid type
+    }
+}
 
 void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
 {
