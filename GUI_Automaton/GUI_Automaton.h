@@ -29,7 +29,6 @@ public:
     void mouseReleaseEvent(QMouseEvent* e);
     void paintEvent(QPaintEvent* e);
     void keyPressEvent(QKeyEvent* event);
-    Automaton convertIntoDFA();
     void preluareFisier();
 
 

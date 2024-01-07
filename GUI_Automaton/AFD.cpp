@@ -3,6 +3,13 @@
 
 AFD::AFD() : initialState('\0') {}
 
+AFD::AFD(Automaton a)
+{
+    this->states = a.getStari();
+    this->alphabet = a.getSimboluri();
+
+}
+
 void AFD::addState(char state) {
     states.insert(state);
 }

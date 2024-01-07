@@ -4,4 +4,4 @@ Tranzitii:
 (a, b) -> b 
 (b, b) -> c 
 Stare initiala: a
-Stari finale: b 
+Stari finale: 
