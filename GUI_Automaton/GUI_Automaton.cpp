@@ -1,4 +1,4 @@
-#include "GUI_Automaton.h"
+﻿#include "GUI_Automaton.h"
 #include <QMouseEvent>
 #include <QFileDialog>
 #include <QDir>
@@ -89,6 +89,7 @@ void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
     }
 
 }
+
 
 void GUI_Automaton::paintEvent(QPaintEvent* e)
 {

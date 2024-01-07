@@ -1,29 +1,16 @@
+﻿// APD.h
 #pragma once
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <vector>
+
 #include <stack>
+#include "AFN.h" // Poți să incluzi și alte dependențe
 
-class APD
-{
-public:
-    APD(std::set<char> states,
-        std::set<char> alphabet,
-        std::set<char> stackAlphabet,
-        std::map<std::tuple<char, char, char>, std::vector<std::tuple<char, std::string>>> transitions,
-        char initialState,
-        char stackInitial,
-        std::unordered_set<char> finalStates);
-
-    bool processInput(const std::string& input);
-
+class APD : public AFN {
 private:
-    std::set<char> states;
-    std::set<char> alphabet;
-    std::set<char> stackAlphabet;
-    std::map<std::tuple<char, char, char>, std::vector<std::tuple<char, std::string>>> transitions;
-    char initialState;
-    char stackInitial;
-    std::unordered_set<char> finalStates;
+    std::stack<char> stack;
+
+public:
+    void pushStack(char symbol);
+    void popStack();
+    char getTopOfStack() const;
+    
 };

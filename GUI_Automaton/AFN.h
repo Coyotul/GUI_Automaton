@@ -1,22 +1,26 @@
+// AFN.h
 #pragma once
+
 #include <set>
 #include <map>
-#include <vector>
-#include <string>
+#include <iostream>
 
-class AFN
-{
-public:
-    AFN(std::set<char> states,
-        std::set<char> alphabet,
-        std::map<std::pair<char, char>, std::set<char>> transitions,
-        char initialState,
-        std::set<char> finalStates);
-
+class AFN {
 private:
     std::set<char> states;
     std::set<char> alphabet;
-    std::map<std::pair<char, char>, std::set<char>> transitions;
+    
     char initialState;
     std::set<char> finalStates;
+
+public:
+    std::map<std::pair<char, char>, std::set<char>> transitions;
+    AFN();
+    void addState(char state);
+    void addAlphabetSymbol(char symbol);
+    void addTransition(char fromState, char symbol, char toState);
+    void setInitialState(char state);
+    void addFinalState(char state);
+
+    void display() const;
 };
