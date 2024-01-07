@@ -1,0 +1,6 @@
+Stari: 
+Alfabet: b 
+Tranzitii:
+(a, b) -> b 
+Stare initiala: a
+Stari finale: a 

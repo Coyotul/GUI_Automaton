@@ -23,6 +23,8 @@ public:
     void addPozitieTranzitie(std::pair<char, char> pos);
     bool CheckWord(std::string word, int it, char initialQ);
     void PrintAutomaton();
+    void ReadAutomatonFromFile(const std::string& filename);
+
 
 private:
     std::vector<char> Q;

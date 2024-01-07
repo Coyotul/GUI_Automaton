@@ -112,34 +112,81 @@ bool Automaton::CheckWord(std::string word, int it, char initialQ)
 
 void Automaton::PrintAutomaton()
 {
+    std::ofstream file("automat.txt");
 
-    std::cout << "Stari: ";
+    file << "Stari: ";
     for (char state : Q) {
         std::cout << state << " ";
     }
-    std::cout << std::endl;
+    file << std::endl;
 
-    std::cout << "Alfabet: ";
+    file << "Alfabet: ";
     for (char symbol : Sigma) {
-        std::cout << symbol << " ";
+        file << symbol << " ";
     }
-    std::cout << std::endl;
+    file << std::endl;
 
-    std::cout << "Tranzitii:" << std::endl;
+    file << "Tranzitii:" << std::endl;
     for (const auto& transition : Delta) {
-        std::cout << "(" << transition.first.first << ", " << transition.first.second << ") -> ";
+        file << "(" << transition.first.first << ", " << transition.first.second << ") -> ";
         for (char to : transition.second) {
-            std::cout << to << " ";
+            file << to << " ";
         }
-        std::cout << std::endl;
+        file << std::endl;
     }
 
-    std::cout << "Stare initiala: " << q0 << std::endl;
+    file << "Stare initiala: " << q0 << std::endl;
 
-    std::cout << "Stari finale: ";
+    file << "Stari finale: ";
     for (char state : F) {
-        std::cout << state << " ";
+        file << state << " ";
     }
-    std::cout << std::endl;
+    file << std::endl;
 
 }
+
+void Automaton::ReadAutomatonFromFile(const std::string& filename)
+{
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Eroare la deschiderea fisierului " << filename << std::endl;
+        return;
+    }
+
+    int numStates;
+    file >> numStates;
+    char state;
+    for (int i = 0; i < numStates; ++i) {
+        file >> state;
+        Q.push_back(state);
+    }
+
+    int numSymbols;
+    file >> numSymbols;
+    char symbol;
+    for (int i = 0; i < numSymbols; ++i) {
+        file >> symbol;
+        Sigma.push_back(symbol);
+    }
+
+    int numTransitions;
+    file >> numTransitions;
+    char from, to;
+    char transitionSymbol;
+    for (int i = 0; i < numTransitions; ++i) {
+        file >> from >> transitionSymbol >> to;
+        Delta[{from, transitionSymbol}].push_back(to);
+    }
+
+    file >> q0;
+
+    int numFinalStates;
+    file >> numFinalStates;
+    for (int i = 0; i < numFinalStates; ++i) {
+        file >> state;
+        F.push_back(state);
+    }
+    file.close();
+}
+

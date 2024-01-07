@@ -92,10 +92,28 @@ void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
                     fabs(e->pos().y() - posStari[i].second) < 10)
                 {
                     if(ui.input->text().size() == 0)
-                        automaton.adaugaTranzitie(std::make_pair(automaton.getStari()[i], simbolTranzitie), automaton.getStari()[indexStareSelectata]);
+                        if (ui.input->text().size() != 0)
+                        {
+                            automaton.adaugaTranzitie(std::make_pair(automaton.getStari()[indexStareSelectata], ui.input->text().toStdString()[0]), automaton.getStari()[i]);
+                            automaton.adaugaSimbol(ui.input->text().toStdString()[0]);
+                        }
+                        else
+                        {
+                            automaton.adaugaTranzitie(std::make_pair(automaton.getStari()[indexStareSelectata], simbolTranzitie), automaton.getStari()[i]);
+                            automaton.adaugaSimbol(simbolTranzitie);
+                        }
                     else
                         if(ui.input->text().size() == 1)
-                            automaton.adaugaTranzitie(std::make_pair(automaton.getStari()[i], ui.input->text().toStdString()[0]), automaton.getStari()[indexStareSelectata]);
+                            if (ui.input->text().size() != 0)
+                            {
+                                automaton.adaugaTranzitie(std::make_pair(automaton.getStari()[indexStareSelectata], ui.input->text().toStdString()[0]), automaton.getStari()[i]);
+                                automaton.adaugaSimbol(ui.input->text().toStdString()[0]);
+                            }
+                            else
+                            {
+                                automaton.adaugaTranzitie(std::make_pair(automaton.getStari()[indexStareSelectata], simbolTranzitie), automaton.getStari()[i]);
+                                automaton.adaugaSimbol(simbolTranzitie);
+                            }
                     indexStareSelectata = -1;
                     primaStare = std::make_pair(0, 0);
                     continue;
@@ -175,7 +193,13 @@ void GUI_Automaton::keyPressEvent(QKeyEvent* event) {
 
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
         if (automaton.CheckWord(ui.input_2->text().toStdString(), 0, 0))
-            f << "\n\nCuvantul " << ui.input_2->text().toStdString() << " este acceptat de automat";
+            f << "Cuvantul " << ui.input_2->text().toStdString() << " este acceptat de automat\n\n";
+        else
+            f << "Cuvantul " << ui.input_2->text().toStdString() << "nu este acceptat de automat\n\n";
+    }
+    else if (event->key() == Qt::Key_Alt)
+    {
+        automaton.PrintAutomaton();
     }
     else {
         QWidget::keyPressEvent(event);

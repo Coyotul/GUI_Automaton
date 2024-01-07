@@ -29,6 +29,7 @@ public:
     void paintEvent(QPaintEvent* e);
     void keyPressEvent(QKeyEvent* event);
 
+
 private:
     Ui::GUI_AutomatonClass ui;
     Automaton automaton;
