@@ -226,7 +226,7 @@ void GUI_Automaton::keyPressEvent(QKeyEvent* event) {
     {
         preluareFisier();
     }
-    else if (event->key() == Qt::Key_Tab) //try to convert into DFA
+    else if (event->key() == Qt::Key_Control) //try to convert into DFA
     {
         std::map<std::pair<char, char>, std::vector<char>> currentTransitions = this->automaton.getTranzitii();
         if (automatonType==2)
