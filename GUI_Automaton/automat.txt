@@ -1,6 +1,7 @@
 Stari: 
-Alfabet: b 
+Alfabet: b b 
 Tranzitii:
 (a, b) -> b 
+(b, b) -> c 
 Stare initiala: a
-Stari finale: a 
+Stari finale: 
