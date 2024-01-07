@@ -2,6 +2,7 @@
 #include <set>
 #include <map>
 #include <vector>
+
 class Automaton
 {
 public:
