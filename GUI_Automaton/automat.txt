@@ -3,4 +3,4 @@ Alfabet: b
 Tranzitii:
 (a, b) -> b 
 Stare initiala: a
-Stari finale: 
+Stari finale: b 

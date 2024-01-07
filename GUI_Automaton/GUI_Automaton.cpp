@@ -81,7 +81,7 @@ void GUI_Automaton::preluareFisier()
     g << words.size() << '\n';
     for (auto it : words)
     {
-        if (automaton.CheckWord(it, 0, 0))
+        if (automaton.CheckWord(it, 0, automaton.getStareInitiala()))
             g << "Cuvantul " << it << " este acceptat de automat\n\n";
         else
             g << "Cuvantul " << it << " nu este acceptat de automat\n\n";
@@ -198,7 +198,7 @@ void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
                 }
             if (index!=-1)
             {
-                automaton.adaugaStareFinala(stari[i]);
+                automaton.adaugaStareFinala(stari[index]);
                 automaton.addPozitieStare(std::make_pair(e->pos().x(), e->pos().y()));
                 q++;
                 break;
@@ -213,7 +213,7 @@ void GUI_Automaton::keyPressEvent(QKeyEvent* event) {
     std::ofstream f("output.out");
 
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
-        if (automaton.CheckWord(ui.input_2->text().toStdString(), 0, 0))
+        if (automaton.CheckWord(ui.input_2->text().toStdString(), 0, automaton.getStareInitiala()))
             f << "Cuvantul " << ui.input_2->text().toStdString() << " este acceptat de automat\n\n";
         else
             f << "Cuvantul " << ui.input_2->text().toStdString() << " nu este acceptat de automat\n\n";
