@@ -67,6 +67,27 @@ void GUI_Automaton::createAutomatonInstance(const QString& type) {
     }
 }
 
+
+void GUI_Automaton::preluareFisier()
+{
+    std::ifstream f("input.txt");
+    std::vector<std::string> words;
+    std::string word;
+    while (f >> word)
+    {
+        words.push_back(word);
+    }
+    std::ofstream g("VerificareCuvinte.txt");
+    g << words.size() << '\n';
+    for (auto it : words)
+    {
+        if (automaton.CheckWord(it, 0, 0))
+            g << "Cuvantul " << it << " este acceptat de automat\n\n";
+        else
+            g << "Cuvantul " << it << " nu este acceptat de automat\n\n";
+    }
+}
+
 void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
 {
     
@@ -195,11 +216,15 @@ void GUI_Automaton::keyPressEvent(QKeyEvent* event) {
         if (automaton.CheckWord(ui.input_2->text().toStdString(), 0, 0))
             f << "Cuvantul " << ui.input_2->text().toStdString() << " este acceptat de automat\n\n";
         else
-            f << "Cuvantul " << ui.input_2->text().toStdString() << "nu este acceptat de automat\n\n";
+            f << "Cuvantul " << ui.input_2->text().toStdString() << " nu este acceptat de automat\n\n";
     }
     else if (event->key() == Qt::Key_Alt)
     {
         automaton.PrintAutomaton();
+    }
+    else if (event->key() == Qt::Key_Shift)
+    {
+        preluareFisier();
     }
     else if (event->key() == Qt::Key_Tab) //try to convert into DFA
     {
@@ -395,7 +420,7 @@ void GUI_Automaton::paintEvent(QPaintEvent* e)
             QPoint endPoint(posStari[index1].first, posStari[index1].second);
 
             int arrowSize = 10;
-            int angle = qAtan2(endPoint.y() - startPoint.y(), endPoint.x() - startPoint.x()) * 180 / 3.14159265;
+            int angle = qAtan2(startPoint.y() - endPoint.y(), startPoint.x() - endPoint.x()) * 180 / 3.14159265;
             QPoint midPoint((startPoint.x() + endPoint.x()) / 2, (startPoint.y() + endPoint.y()) / 2);
             QPoint midPoint2((startPoint.x() + endPoint.x()) / 2 + 10, (startPoint.y() + endPoint.y()) / 2 + 15);
             QString s = " ";
@@ -405,10 +430,10 @@ void GUI_Automaton::paintEvent(QPaintEvent* e)
             angle += 180;
             QPolygon arrowHead;
             arrowHead << midPoint;
-            arrowHead << midPoint + QPoint(cos((angle - 30) * 3.14159265 / 180) * arrowSize,
-                sin((angle - 30) * 3.14159265 / 180) * arrowSize);
             arrowHead << midPoint + QPoint(cos((angle + 30) * 3.14159265 / 180) * arrowSize,
                 sin((angle + 30) * 3.14159265 / 180) * arrowSize);
+            arrowHead << midPoint + QPoint(cos((angle - 30) * 3.14159265 / 180) * arrowSize,
+                sin((angle - 30) * 3.14159265 / 180) * arrowSize);
 
             p.drawPolygon(arrowHead);
         }

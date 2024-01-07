@@ -15,6 +15,8 @@ void Automaton::adaugaTranzitie(std::pair<char, char> tranzitie, char destinatie
     }
 }
 
+
+
 void Automaton::adaugaStare(char stare)
 {
 	Q.push_back(stare);
