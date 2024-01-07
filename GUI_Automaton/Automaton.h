@@ -10,6 +10,7 @@ public:
     void adaugaTranzitie(std::pair<char, char> tranzitie,char destinatie);
     void adaugaStare(char stare);
     void adaugaSimbol(char simbol);
+    void adaugaStareFinala(char simbol);
     void seteazaSimbolInitial(char initial);
     std::vector<char> getStari();
     std::vector<char> getSimboluri();

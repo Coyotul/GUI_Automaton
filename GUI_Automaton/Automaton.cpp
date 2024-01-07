@@ -25,6 +25,11 @@ void Automaton::adaugaSimbol(char simbol)
 	Sigma.push_back(simbol);
 }
 
+void Automaton::adaugaStareFinala(char simbol)
+{
+    F.push_back(simbol);
+}
+
 void Automaton::seteazaSimbolInitial(char initial)
 {
 	q0 = initial;

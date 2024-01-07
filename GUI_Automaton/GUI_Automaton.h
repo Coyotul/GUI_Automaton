@@ -27,6 +27,7 @@ public:
     void createAutomatonInstance(const QString& type);
     void mouseReleaseEvent(QMouseEvent* e);
     void paintEvent(QPaintEvent* e);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     Ui::GUI_AutomatonClass ui;
@@ -35,6 +36,4 @@ private:
     std::pair<int, int> primaStare = std::make_pair(0, 0);
     int indexStareSelectata = -1;
     QComboBox* automatonTypeComboBox;
-    
-    
 };

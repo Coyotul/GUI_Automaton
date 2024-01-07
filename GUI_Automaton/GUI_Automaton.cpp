@@ -61,7 +61,8 @@ void GUI_Automaton::createAutomatonInstance(const QString& type) {
         automaton2 = new APD();
         automatonType = 4;
     }
-    else {
+    else 
+{
         // Handle invalid type
     }
 }
@@ -72,7 +73,7 @@ void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
     {
         char simbolTranzitie = 'b';
     }
-    std::ofstream g("output.out");
+    std::ofstream g("output.txt");
     if (e->button() == Qt::LeftButton)
     {
         std::vector<std::pair<int, int>> posStari = automaton.getPozitieStari();
@@ -112,6 +113,10 @@ void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
         std::vector<char> stari = automaton.getStari();
         std::vector<std::pair<int, int>> posStari = automaton.getPozitieStari();
         g << stari.size();
+        if (stari.size() == 0)
+        {
+            automaton.seteazaSimbolInitial(q);
+        }
         for (int i=0;i<stari.size();i++)
         {
             bool stareInvalida = false;
@@ -135,15 +140,46 @@ void GUI_Automaton::mouseReleaseEvent(QMouseEvent* e)
             automaton.addPozitieStare(std::make_pair(e->pos().x(), e->pos().y()));
             q++;
         }
+
         update();
     }
     else if (e->button() == Qt::MiddleButton)
     {
-
+        std::vector<char> stari = automaton.getStari();
+        std::vector<std::pair<int, int>> posStari = automaton.getPozitieStari();
+        for (int i = 0; i < stari.size(); i++)
+        {
+            int index = -1;;
+            for (int i = 0;i<stari.size();i++)
+                if (fabs(e->pos().x() - posStari[i].first) < 10 &&
+                    fabs(e->pos().y() - posStari[i].second) < 10)
+                {
+                    index = i;
+                }
+            if (index!=-1)
+            {
+                automaton.adaugaStareFinala(stari[i]);
+                automaton.addPozitieStare(std::make_pair(e->pos().x(), e->pos().y()));
+                q++;
+                break;
+            }
+        }
     }
 
 }
 
+
+void GUI_Automaton::keyPressEvent(QKeyEvent* event) {
+    std::ofstream f("output.out");
+
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        if (automaton.CheckWord(ui.input_2->text().toStdString(), 0, 0))
+            f << "\n\nCuvantul " << ui.input_2->text().toStdString() << " este acceptat de automat";
+    }
+    else {
+        QWidget::keyPressEvent(event);
+    }
+}
 
 void GUI_Automaton::paintEvent(QPaintEvent* e)
 {
